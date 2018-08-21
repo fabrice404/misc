@@ -1,0 +1,77 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Speedrun frames to time converter</title>
+  <meta name="author" content="Fabrice Lamant">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="
+    crossorigin="anonymous" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1>Speedrun frames to time converter</h1>
+        <div>
+          <div class="form-group row">
+            <label for="startFrame" class="col-sm-2 col-form-label">Start frame</label>
+            <div class="col-sm-4">
+              <input id="startFrame" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="endFrame" class="col-sm-2 col-form-label">End frame</label>
+            <div class="col-sm-4">
+              <input id="endFrame" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="fps" class="col-sm-2 col-form-label">FPS</label>
+            <div class="col-sm-4">
+              <input id="fps" class="form-control" value="60">
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="fps();">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div id="result"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-duration-format/2.2.2/moment-duration-format.min.js" integrity="sha256-bXC/nhRjq/J7K4hnL8yvthqXkskSKOsZNfrLgXBigYg="
+    crossorigin="anonymous"></script>
+  <script src="./utils.js"></script>
+  <script>
+    const fps = () => {
+      const startFrame = getValue('startFrame') || 0;
+      const endFrame = getValue('endFrame') || 0;
+      const totalFrames = endFrame - startFrame;
+      const fps = getValue('fps') || 60;
+      const duration = moment.duration(
+        parseFloat(totalFrames / fps),
+        'seconds'
+      ).format('hh:mm:ss.SSS')
+
+      getElement('result').innerHTML = `<pre class="text-monospace mt-4">` +
+        `FCEUX 2.2.3 w/ input display and frame counter.\n\n` +
+        `Start:\t${startFrame}\n` +
+        `End:\t${endFrame}\n` +
+        `Total:\t${totalFrames}\n` +
+        `FPS:\t${fps}\n` +
+        `Time:\t${duration}` +
+        `</pre>`;
+    };
+  </script>
+</body>
+
+</html>
