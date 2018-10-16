@@ -5,9 +5,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Luas</title>
   <meta name="author" content="Fabrice Lamant">
+  <title>Luas</title>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
     integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous" />
   <style>
@@ -53,26 +61,6 @@
 
   <script src="./utils.js"></script>
   <script>
-    // const symbol = getQueryParameterByName('symbol') || 'SSTK';
-    // const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=YMI7P74NUFU1UJW5`;
-    // loadUrl(url, (result) => {
-    //   const stock = JSON.parse(result);
-    //   const shares = parseInt(getQueryParameterByName('shares') || 1);
-    //   let data = [];
-    //   Object.entries(stock["Time Series (Daily)"])
-    //     .forEach(([date, values]) => {
-    //       const value = values['4. close'] * shares;
-    //       data.push({ t: moment(date).toDate(), y: value.toFixed(2) });
-    //     });
-    //   data = data.sort((a, b) => { return a.t.getTime() - b.t.getTime(); });
-    //   var ctx = document.getElementById('stock').getContext('2d');
-    //   new Chart(ctx, {
-    //     type: 'line',
-    //     data: { datasets: [{ label: 'stock', data }] },
-    //     options: { scales: { xAxes: [{ type: 'time', time: { unit: 'day', distribution: 'series' } }] } },
-    //   });
-    // });
-    // https://luas.ie/luas-pid.html?stop=74
     const parser = new DOMParser();
 
     const loadLuas = (id) => {
