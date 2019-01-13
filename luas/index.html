@@ -31,37 +31,28 @@
 
     table {
       width: 100%;
+      margin-bottom: 20px;
     }
 
     td {
       font-family: 'Courier New', Courier, monospace;
+      width: 50%;
+      color: #ffaa00;
     }
   </style>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-10009328-14"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'UA-10009328-14');
+  </script>
 </head>
 
 <body>
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-3">
-        <h2>Spencer Dock</h2>
-        <div id="spencer-dock" stop-id="74" stop-direction="1">
-        </div>
-      </div>
-      <div class="col-lg-3">
-        <h2>Marlborough</h2>
-        <div id="marlborough" stop-id="2839" stop-direction="1">
-        </div>
-      </div>
-      <div class="col-lg-3">
-        <h2>Abbey street</h2>
-        <div id="abbey-street" stop-id="80" stop-direction="0">
-        </div>
-      </div>
-      <div class="col-lg-3">
-        <h2>St Stephen's Green</h2>
-        <div id="st-stephens-green" stop-id="104" stop-direction="0">
-        </div>
-      </div>
+    <div class="row" id="stops">
     </div>
   </div>
 
@@ -69,20 +60,41 @@
   <script>
     const parser = new DOMParser();
 
-    const loadLuas = (id) => {
-      const stop = getElement(id);
-      const stopId = stop.getAttribute('stop-id');
-      const stopDirection = stop.getAttribute('stop-direction');
-      loadUrl(`https://luas.ie/luas-pid.html?stop=${stopId}`, result => {
+    const getRow = (row) => {
+      const destination = row.children[1].innerText;
+      const time = parseInt(row.children[2].innerText.split(/:/)[1]);
+      return { destination, time };
+    }
+
+    const loadStop = (id, direction) => {
+      document.getElementById('stops').innerHTML += `<div class="col-lg-3" id="stop-${id}"></div>`;
+
+      loadUrl(`//luasforecasts.rpa.ie/analysis/view.aspx?id=${id}`, result => {
         const doc = parser.parseFromString(result, "text/html");
-        stop.innerHTML = doc.getElementsByClassName('stop-table')[stopDirection].innerHTML;
+        const stopList = doc.getElementById('cplBody_ddlStop');
+        const [, , stopName] = stopList.options[stopList.selectedIndex].innerText.split(/-/);
+        let content = `<h2>${stopName}</h2><table>`;
+        const rows = doc.getElementsByTagName('table')[0].children[0].children;
+        for (let i = 0, len = rows.length; i < len; i++) {
+          const row = rows[i];
+          if ((direction === 'in' && row.children[0].innerText === 'Inbound')
+            || (direction === 'out' && row.children[0].innerText === 'Outbound')) {
+            const { destination, time } = getRow(row);
+            content += `<tr><td>${destination}</td><td>${time === 0 ? 'due' : time}</td></tr>`;
+          }
+        }
+        content += `</table>`;
+        document.getElementById(`stop-${id}`).innerHTML = content;
       });
     };
 
-    loadLuas('spencer-dock');
-    loadLuas('marlborough');
-    loadLuas('abbey-street');
-    loadLuas('st-stephens-green');
+    (() => {
+      const stops = new URL(document.location.href).searchParams.get("s");
+      stops.split(/,/).forEach(stop => {
+        const [id, direction] = stop.split(/-/);
+        loadStop(id, direction);
+      });
+    })();
   </script>
 </body>
 
