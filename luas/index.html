@@ -80,7 +80,7 @@
           if ((direction === 'in' && row.children[0].innerText === 'Inbound')
             || (direction === 'out' && row.children[0].innerText === 'Outbound')) {
             const { destination, time } = getRow(row);
-            content += `<tr><td>${destination}</td><td>${time === 0 ? 'due' : time}</td></tr>`;
+            content += `<tr><td>${destination}</td><td>${time === 0 ? 'Due' : time}</td></tr>`;
           }
         }
         content += `</table>`;
