@@ -75,7 +75,7 @@
     const loadStop = (id, direction) => {
       document.getElementById('stops').innerHTML += `<div class="col-lg-3" id="stop-${id}"></div>`;
 
-      loadUrl(`//luasforecasts.rpa.ie/analysis/view.aspx?id=${id}`, result => {
+      loadUrl(`//luasforecasts.rpa.ie/analysis/view.aspx?id=${id}&time=${(new Date()).getTime()}`, result => {
         const doc = parser.parseFromString(result, "text/html");
         const stopList = doc.getElementById('cplBody_ddlStop');
         const [, , stopName] = stopList.options[stopList.selectedIndex].innerText.split(/-/);
