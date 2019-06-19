@@ -54,6 +54,12 @@
   <div class="container-fluid">
     <div class="row" id="stops">
     </div>
+    <div class=row>
+      <div class="col text-center">
+        <button class="btn btn-dark" id=refresh>Refresh</button>
+        <div><small id="last-update" class=text-secondary></small></div>
+      </div>
+    </div>
   </div>
 
   <script src="../utils.js"></script>
@@ -85,6 +91,7 @@
         }
         content += `</table>`;
         document.getElementById(`stop-${id}`).innerHTML = content;
+        document.getElementById('last-update').innerText = 'Last updated at ' + (new Date()).toLocaleTimeString().slice(0, 5);
       });
     };
 
@@ -93,6 +100,10 @@
       stops.split(/,/).forEach(stop => {
         const [id, direction] = stop.split(/-/);
         loadStop(id, direction);
+      });
+
+      document.getElementById('refresh').addEventListener('click', () => {
+        document.location.href = `./?s=${stops}&time=${(new Date()).getTime()}`;
       });
     })();
   </script>
